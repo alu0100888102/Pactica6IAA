@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.io.*;
 
 public class Vocabulario {
+	
 	Hashtable<String, Integer> palabras;
 	
 	public Vocabulario(){
@@ -32,16 +33,23 @@ public class Vocabulario {
 			bufferreader.close();
 		}
 		catch(FileNotFoundException e){
-			System.out.println("Error en el fichero: no se encuentra " + e);
+			System.err.println("Error en el fichero: no se encuentra " + e);
 			System.exit(1);
 		}
 		catch(IOException e){
-			System.out.println("Error en el fichero: error de entrada/salida " + e);
+			System.err.println("Error en el fichero: error de entrada/salida " + e);
 			System.exit(1);
 		}
 		catch(IllegalArgumentException e){
-			System.out.println("Linea  Error en el fichero: error de entrada/salida " + e);
+			System.err.println("Linea  Error en el fichero: error de entrada/salida " + e);
 			System.exit(1);
 		}
 	}
+	public Hashtable<String, Integer> getPalabras() {
+		return palabras;
+	}
+	public void setPalabras(Hashtable<String, Integer> palabras) {
+		this.palabras = palabras;
+	}
+	
 }
