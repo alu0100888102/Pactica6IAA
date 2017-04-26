@@ -1,22 +1,27 @@
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
+import javax.swing.text.html.HTMLDocument.Iterator;
 
 public class VocabularioWriter {
-	
-	public static void fileWriter(Vocabulario toWrite, String outputFile){
-		FileWriter fichero = null;
+  
+  public static void fileWriter(Vocabulario toWrite, String outputFile){
+    FileWriter fichero = null;
         PrintWriter pw = null;
         try
         {
             fichero = new FileWriter(outputFile);
             pw = new PrintWriter(fichero);
-            
-            Set<String> keys = toWrite.getPalabras().keySet();
-            for(String key: keys){
-                System.out.println(key + ", " + toWrite.getPalabras().get(key));
-                pw.println(key + ", " + toWrite.getPalabras().get(key));
-            }
+            SortedMap map = new TreeMap(toWrite.getPalabras());
+          java.util.Iterator iterator = map.keySet().iterator();
+
+          while (iterator.hasNext()) {
+            Object key = iterator.next();
+            pw.write("Palabra : " + key + " Nº Apariciones :" + map.get(key) + "\n");
+          }
             
 
         } 
@@ -25,13 +30,13 @@ public class VocabularioWriter {
         } 
         finally {
            try {
-	           if (null != fichero)
-	              fichero.close();
+             if (null != fichero)
+                fichero.close();
            } 
            catch (Exception e2) {
               e2.printStackTrace();
            }
         }
-	}
+  }
 
 }
