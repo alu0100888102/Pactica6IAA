@@ -7,12 +7,15 @@ import java.io.*;
 public class Vocabulario {
 	
 	Hashtable<String, Integer> palabras;
+	long npalabras;
 	
 	public Vocabulario(){
 		palabras = new Hashtable<String, Integer>();
+		npalabras =0;
 	}
 	public Vocabulario(File input){
 		palabras = new Hashtable<String, Integer>();
+		npalabras =0;
 		try{
 			FileInputStream istream = new FileInputStream(input);
 			BufferedReader bufferreader = new BufferedReader(new InputStreamReader(istream));
@@ -21,9 +24,10 @@ public class Vocabulario {
 			while ((line = bufferreader.readLine()) != null) {
 				if(line.isEmpty())
 					continue;
-				String[] division = line.split("\\s+");
+				String[] division = line.split("\\W+");
 				for(String text : division){
-					if(palabras.contains(text)){
+					npalabras++;
+					if(palabras.containsKey(text)){
 						palabras.put(text, palabras.get(text)+1);
 					}
 					else
@@ -61,10 +65,10 @@ public class Vocabulario {
 	            pw = new PrintWriter(fichero);
 	            SortedMap map = new TreeMap(getPalabras());
 	          java.util.Iterator iterator = map.keySet().iterator();
-
+	          pw.write("Numero de palabras: "+npalabras+"\n");
 	          while (iterator.hasNext()) {
 	            Object key = iterator.next();
-	            pw.write("Palabra : " + key + " Nº Apariciones :" + map.get(key) + "\n");
+	            pw.write("Palabra : " + key + "\n");
 	          }
 	            
 
