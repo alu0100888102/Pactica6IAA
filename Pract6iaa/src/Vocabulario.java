@@ -52,4 +52,35 @@ public class Vocabulario {
 		this.palabras = palabras;
 	}
 	
+	public void writeToFile(File out){
+		 FileWriter fichero = null;
+	        PrintWriter pw = null;
+	        try
+	        {
+	            fichero = new FileWriter(out);
+	            pw = new PrintWriter(fichero);
+	            SortedMap map = new TreeMap(getPalabras());
+	          java.util.Iterator iterator = map.keySet().iterator();
+
+	          while (iterator.hasNext()) {
+	            Object key = iterator.next();
+	            pw.write("Palabra : " + key + " Nº Apariciones :" + map.get(key) + "\n");
+	          }
+	            
+
+	        } 
+	        catch (Exception e) {
+	            e.printStackTrace();
+	        } 
+	        finally {
+	           try {
+	             if (null != fichero)
+	                fichero.close();
+	           } 
+	           catch (Exception e2) {
+	              e2.printStackTrace();
+	           }
+	        }
+	}
+	
 }
