@@ -24,7 +24,10 @@ public class Vocabulario {
 	public void suavizadoLaplaciano(File vocabularioTodo, File outputFile){
 		
 		try{
-			
+			//Limpiamos el fichero de salida
+			PrintWriter writer = new PrintWriter(outputFile);
+			writer.print("");
+			writer.close();
 			//Cabecera del fichero
 			this.writeLineToFile(outputFile, "Numero de documentos (preguntas) del corpus : " + this.nLineas);
 			this.writeLineToFile(outputFile, "Numero de palabras del corpus: " + this.npalabras);
@@ -33,15 +36,16 @@ public class Vocabulario {
 			FileInputStream istreamVocabulario = new FileInputStream(vocabularioTodo);
 			BufferedReader bufferedReaderVocabulario = new BufferedReader(new InputStreamReader(istreamVocabulario));
 			String lineVocabulario = null;
-			int nPalabrasVocabulario = Integer.parseInt(bufferedReaderVocabulario.readLine().split("//s+")[3]);
+			lineVocabulario =bufferedReaderVocabulario.readLine();
+			int nPalabrasVocabulario = Integer.parseInt(lineVocabulario.split("\\s+")[3]);
 			
 			System.out.println(nPalabrasVocabulario);
 			
 			//Iteración entre las palabras del vocabulario y las del corpus
 			while((lineVocabulario = bufferedReaderVocabulario.readLine()) != null){
-				if(lineVocabulario.split("//s+").length == 3){
+				if(lineVocabulario.split("\\s+").length == 3){
 				
-					String palabraActual = lineVocabulario.split("//s+")[2]; //Capturar palabra de la linea
+					String palabraActual = lineVocabulario.split("\\s+")[2]; //Capturar palabra de la linea
 					int nApariciones = 0;
 					
 					if(this.getPalabras().containsKey(palabraActual)){ //Si está en el corpus, obtener las apariciones
@@ -49,10 +53,14 @@ public class Vocabulario {
 					}
 					
 					//Suavizado laplaciano
-					double logaritmoSuavizadoLaplaciano = Math.log((nApariciones + 1) / (this.npalabras + nPalabrasVocabulario + 1));
+					double logaritmoSuavizadoLaplaciano = Math.log((double)(nApariciones + 1) / (double)(this.npalabras + nPalabrasVocabulario + 1));
 
+					
 					//Escritura de la linea
 					this.writeLineToFile(outputFile, "Palabra: " + palabraActual + " Frec: " + nApariciones  + " LogProb: " + logaritmoSuavizadoLaplaciano);
+					
+					//Mensaje para el debuggin
+					System.out.println(palabraActual);
 					
 				}
 			}
@@ -71,7 +79,6 @@ public class Vocabulario {
 			FileInputStream istream = new FileInputStream(input);
 			BufferedReader bufferreader = new BufferedReader(new InputStreamReader(istream));
 			String line = null;
-			AtomicBoolean comment = new AtomicBoolean(false);
 			while ((line = bufferreader.readLine()) != null) {
 				if(line.isEmpty())
 					continue;
