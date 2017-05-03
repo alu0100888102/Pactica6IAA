@@ -8,11 +8,62 @@ public class Vocabulario {
 	
 	Hashtable<String, Integer> palabras;
 	long npalabras;
+	int nLineas = 0;
 	
 	public Vocabulario(){
 		palabras = new Hashtable<String, Integer>();
 		npalabras =0;
 	}
+	
+	/**
+	 * Metodo que utiliza un vocabulario objeto proveniente de un corpus y que compara las palabras del vocabularioTodo de entrada con las del objeto
+	 * para obtener el logaritmo del suavizado laplaciano en el fichero de salida.
+	 * @param vocabularioTodo Fichero con todo el vocabulario del corpus
+	 * @param outputFile Fichero de salida del aprendizaje
+	 */
+	public void suavizadoLaplaciano(File vocabularioTodo, File outputFile){
+		
+		try{
+			
+			//Cabecera del fichero
+			this.writeLineToFile(outputFile, "Numero de documentos (preguntas) del corpus : " + this.nLineas);
+			this.writeLineToFile(outputFile, "Numero de palabras del corpus: " + this.npalabras);
+			
+			//Declaraciones de variables
+			FileInputStream istreamVocabulario = new FileInputStream(vocabularioTodo);
+			BufferedReader bufferedReaderVocabulario = new BufferedReader(new InputStreamReader(istreamVocabulario));
+			String lineVocabulario = null;
+			int nPalabrasVocabulario = Integer.parseInt(bufferedReaderVocabulario.readLine().split("//s+")[3]);
+			
+			System.out.println(nPalabrasVocabulario);
+			
+			//Iteración entre las palabras del vocabulario y las del corpus
+			while((lineVocabulario = bufferedReaderVocabulario.readLine()) != null){
+				if(lineVocabulario.split("//s+").length == 3){
+				
+					String palabraActual = lineVocabulario.split("//s+")[2]; //Capturar palabra de la linea
+					int nApariciones = 0;
+					
+					if(this.getPalabras().containsKey(palabraActual)){ //Si está en el corpus, obtener las apariciones
+						nApariciones = this.getPalabras().get(palabraActual);
+					}
+					
+					//Suavizado laplaciano
+					double logaritmoSuavizadoLaplaciano = Math.log((nApariciones + 1) / (this.npalabras + nPalabrasVocabulario + 1));
+
+					//Escritura de la linea
+					this.writeLineToFile(outputFile, "Palabra: " + palabraActual + " Frec: " + nApariciones  + " LogProb: " + logaritmoSuavizadoLaplaciano);
+					
+				}
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
 	public Vocabulario(File input){
 		palabras = new Hashtable<String, Integer>();
 		npalabras =0;
@@ -24,6 +75,8 @@ public class Vocabulario {
 			while ((line = bufferreader.readLine()) != null) {
 				if(line.isEmpty())
 					continue;
+				
+				this.nLineas++;
 				String[] division = line.split("\\W+");
 				for(String text : division){
 					npalabras++;
@@ -54,6 +107,28 @@ public class Vocabulario {
 	}
 	public void setPalabras(Hashtable<String, Integer> palabras) {
 		this.palabras = palabras;
+	}
+	
+	public void writeLineToFile(File out, String line){
+		FileWriter fichero = null;
+		PrintWriter pw = null;
+		try{
+			fichero = new FileWriter(out, true);
+			pw = new PrintWriter(fichero);
+			pw.println(line);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		finally {
+			try{
+				if(null != fichero)
+					fichero.close();
+			}
+			catch (Exception e2){
+				e2.printStackTrace();
+			}
+		}
 	}
 	
 	public void writeToFile(File out){
