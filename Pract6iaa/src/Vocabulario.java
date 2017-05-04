@@ -86,12 +86,13 @@ public class Vocabulario {
 				this.nLineas++;
 				String[] division = line.split("\\W+");
 				for(String text : division){
-					npalabras++;
 					if(palabras.containsKey(text)){
 						palabras.put(text, palabras.get(text)+1);
 					}
-					else
+					else{
+						npalabras++;
 						palabras.put(text, 1);
+					}
 				}
 			}
 			bufferreader.close();
