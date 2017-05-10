@@ -3,10 +3,12 @@ import java.io.*;
 import java.util.*;
 
 public class Clasificacion {
-	ArrayList<Hashtable<String,Double>> vocabularios;
+	ArrayList<HashMap<String,Double>> vocabularios;
+	HashMap<String, Integer> salida;
 
 	public Clasificacion(){
-		vocabularios = new ArrayList<Hashtable<String,Double>>();
+		vocabularios = new ArrayList<HashMap<String,Double>>();
+		salida = new HashMap<String, Integer>();
 	}
 	
 	/** Cojemos cada uno de los ficheros de aprendizaje y guardamos en una tabla hash
@@ -23,11 +25,13 @@ public class Clasificacion {
 				line =bufferedReaderVocabulario.readLine();
 				
 				//Coge cada palabra del fichero de aprendizaje
-				Hashtable<String, Double> palabras = new Hashtable<String, Double>();
+				HashMap<String, Double> palabras = new HashMap<String, Double>();
 				while((line = bufferedReaderVocabulario.readLine()) != null){
 					String[] data = line.split("\\s+");
 					palabras.put(data[1], Double.parseDouble(data[5])); //Cogemos el String de la palabra y su LogProb
+					System.out.println(line);
 				}
+				
 				vocabularios.add(palabras);
 				System.out.println("Aprendizaje "+i+" compleatdo.");
 			}
@@ -51,13 +55,14 @@ public class Clasificacion {
 			//Iteraci√≥n entre las palabras del vocabulario y las del corpus
 			while((line = bufferedReaderVocabulario.readLine()) != null){
 				int perteneceA = 0;
-				double greater = Double.MIN_VALUE;
+				double greater = -50000;
 				String[] data = line.split("\\s+");
 				
 				for(int i = 0; i< vocabularios.size(); i++){
 					double value = 0;
 					for(String word : data){
-						value += vocabularios.get(i).get(word);
+						if(vocabularios.get(i).containsKey(word))
+							value += vocabularios.get(i).get(word);
 					}
 					if(value > greater){
 						greater = value;
@@ -66,7 +71,8 @@ public class Clasificacion {
 				}
 				
 				//Escritura de la linea
-				this.writeLineToFile(outputFile, "Frase: " + line + "Pertenece a: "+ perteneceA);
+				this.writeLineToFile(outputFile, "Frase: " + line + " Pertenece a: "+ perteneceA);
+				salida.put(line, perteneceA);
 					
 				//Mensaje para el debuggin
 				System.out.println(line);
@@ -97,6 +103,36 @@ public class Clasificacion {
 			catch (Exception e2){
 				e2.printStackTrace();
 			}
+		}
+	}
+	
+	public void calcularAciertos(){
+		try{
+			int palabrasTotales =0;
+			int aciertos =0;
+			int fallos =0;
+			for(int i =1; i<=20; i++){
+				//Declaraciones de variables
+				FileInputStream istreamVocabulario = new FileInputStream(new File("corpus/corpus"+i+".txt"));
+				BufferedReader bufferedReaderVocabulario = new BufferedReader(new InputStreamReader(istreamVocabulario));
+				String line = null;
+				
+				while((line = bufferedReaderVocabulario.readLine()) != null){
+					palabrasTotales++;
+					if(salida.containsKey(line))
+						if(salida.get(line) == i)
+							aciertos++;
+						else
+							fallos++;
+					else
+						fallos++;
+				}
+				
+			}
+			System.out.println("Total: " + palabrasTotales +"\nAciertos: " + aciertos + "\nFallos: " + fallos + "\nPorcentaje de Èxito: " + (((double)aciertos/(double)palabrasTotales)*100));
+		}
+		catch(Exception e){
+			e.printStackTrace();
 		}
 	}
 }

@@ -12,13 +12,13 @@ public class Main {
 			File todo = new File("vocabulario/vocabulariotodo.txt");
 			Vocabulario vocabulario = new Vocabulario(input);
 			vocabulario.suavizadoLaplaciano(todo, output);
-			System.out.print("====================================================\nCorpus "+i+" Completo\n====================================================\n");
+			System.out.println("====================================================\nCorpus "+i+" Completo\n====================================================\n");
 		}*/
 		
 		Clasificacion clasificador = new Clasificacion();
 		clasificador.aprender();
-		clasificador.analizar(new File("corpus/corpustodo.txt"), new File("outputs/output.txt"));
-		
+		clasificador.analizar(new File("corpus/corpustodo.txt"), new File("output.txt"));
+		clasificador.calcularAciertos();
 	}
 
 }
