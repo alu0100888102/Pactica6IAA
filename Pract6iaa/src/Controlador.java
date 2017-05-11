@@ -38,9 +38,7 @@ public class Controlador {
 			this.vocabulario.writeToFile(vocabulario);
 			this.vocabulario.suavizadoLaplaciano(vocabularioTodo, aprendizaje);
 			
-			Descomente esto para que haga todo corpus->vocabulario->aprendizaje->analisis.
-			
-			*/
+			Descomente esto para que haga todo corpus->vocabulario->aprendizaje->analisis.*/
 			this.clasificador.aprender(aprendizaje);
 		}
 		File outputFile = new File("output.txt");
