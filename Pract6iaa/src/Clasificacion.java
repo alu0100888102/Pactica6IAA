@@ -14,27 +14,25 @@ public class Clasificacion {
 	/** Cojemos cada uno de los ficheros de aprendizaje y guardamos en una tabla hash
 	 * cada palabra y su LogProb.
 	 */
-	public void aprender(){
+	public void aprender(File input){
 		try{
-			for(int i =1; i<=20; i++){
-				//Declaraciones de variables
-				FileInputStream istreamVocabulario = new FileInputStream(new File("aprendizaje/aprendizaje"+i+".txt"));
-				BufferedReader bufferedReaderVocabulario = new BufferedReader(new InputStreamReader(istreamVocabulario));
-				String line = null;
-				line =bufferedReaderVocabulario.readLine();
-				line =bufferedReaderVocabulario.readLine();
+			//Declaraciones de variables
+			FileInputStream istreamVocabulario = new FileInputStream(input);
+			BufferedReader bufferedReaderVocabulario = new BufferedReader(new InputStreamReader(istreamVocabulario));
+			String line = null;
+			line =bufferedReaderVocabulario.readLine();
+			line =bufferedReaderVocabulario.readLine();
 				
-				//Coge cada palabra del fichero de aprendizaje
-				HashMap<String, Double> palabras = new HashMap<String, Double>();
-				while((line = bufferedReaderVocabulario.readLine()) != null){
-					String[] data = line.split("\\s+");
-					palabras.put(data[1], Double.parseDouble(data[5])); //Cogemos el String de la palabra y su LogProb
-					System.out.println(line);
-				}
-				
-				vocabularios.add(palabras);
-				System.out.println("Aprendizaje "+i+" compleatdo.");
+			//Coge cada palabra del fichero de aprendizaje
+			HashMap<String, Double> palabras = new HashMap<String, Double>();
+			while((line = bufferedReaderVocabulario.readLine()) != null){
+				String[] data = line.split("\\s+");
+				palabras.put(data[1], Double.parseDouble(data[5])); //Cogemos el String de la palabra y su LogProb
+				System.out.println(line);
 			}
+					
+			vocabularios.add(palabras);
+			System.out.println("Aprendizaje compleatdo.");
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -106,14 +104,14 @@ public class Clasificacion {
 		}
 	}
 	
-	public void calcularAciertos(){
+	public void calcularAciertos(ArrayList<File> corpus){
 		try{
 			int palabrasTotales =0;
 			int aciertos =0;
 			int fallos =0;
-			for(int i =1; i<=20; i++){
+			for(int i =1; i<=corpus.size(); i++){
 				//Declaraciones de variables
-				FileInputStream istreamVocabulario = new FileInputStream(new File("corpus/corpus"+i+".txt"));
+				FileInputStream istreamVocabulario = new FileInputStream(corpus.get(i-1));
 				BufferedReader bufferedReaderVocabulario = new BufferedReader(new InputStreamReader(istreamVocabulario));
 				String line = null;
 				

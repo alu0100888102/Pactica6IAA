@@ -72,7 +72,7 @@ public class Vocabulario {
 		
 	}
 	
-	public Vocabulario(File input){
+	public void geneaVocabulario(File input){
 		palabras = new Hashtable<String, Integer>();
 		npalabras =0;
 		try{

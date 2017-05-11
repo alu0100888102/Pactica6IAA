@@ -1,4 +1,4 @@
-Numero de documentos (preguntas) del corpus : 990
+Numero de documentos (preguntas) del corpus : 19990
 Numero de palabras del corpus: 1949
 Palabra: 0 Frec: 1 LogProb: -9.016876974763383
 Palabra: 00 Frec: 0 LogProb: -9.710024155323328

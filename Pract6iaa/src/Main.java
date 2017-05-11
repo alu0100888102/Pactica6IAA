@@ -1,24 +1,17 @@
 
 import java.io.*;
+import java.util.*;
 
 public class Main {
 	
 	public static void main(String[] args){
-		/*for(int i =1; i<=20; i++){
+		ArrayList<File> corpus = new ArrayList<File>();
+		for(int i =1; i<=20; i++){
 			String in = new String("corpus/corpus"+i+".txt");
-			String out= new String("aprendizaje/aprendizaje"+i+".txt");
-			File input = new File(in);
-			File output = new File(out);
-			File todo = new File("vocabulario/vocabulariotodo.txt");
-			Vocabulario vocabulario = new Vocabulario(input);
-			vocabulario.suavizadoLaplaciano(todo, output);
-			System.out.println("====================================================\nCorpus "+i+" Completo\n====================================================\n");
-		}*/
-		
-		Clasificacion clasificador = new Clasificacion();
-		clasificador.aprender();
-		clasificador.analizar(new File("corpus/corpustodo.txt"), new File("output.txt"));
-		clasificador.calcularAciertos();
+			corpus.add(new File(in));
+		}
+		Controlador controlador = new Controlador();
+		controlador.analizarDesdeCorpus(new File("corpus/corpustodo.txt"), corpus, new File("stackoverflowtestnoclass.txt"));
 	}
 
 }
