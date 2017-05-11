@@ -11,7 +11,7 @@ public class Main {
 			corpus.add(new File(in));
 		}
 		Controlador controlador = new Controlador();
-		controlador.analizarDesdeCorpus(new File("corpus/corpustodo.txt"), corpus, new File("stackoverflowtestnoclass.txt"));
+		controlador.analizarDesdeCorpus(new File("corpus/corpustodo.txt"), corpus, new File("corpus/corpustodo.txt"));
 	}
 
 }
