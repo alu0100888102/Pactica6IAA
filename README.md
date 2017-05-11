@@ -2,7 +2,7 @@
 
 > Descripción de la implementación, por **Joaquín Sanchiz** y **Ángel Hamilton.**
 
---
+---
 
 ## Lenguaje
 
