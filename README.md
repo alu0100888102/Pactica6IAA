@@ -1,5 +1,4 @@
-#
-**Informe Inteligencia Artificial Avanzada**
+# **Informe Inteligencia Artificial Avanzada**
 
 > Descripción de la implementación, por **Joaquín Sanchiz** y **Ángel Hamilton.**
 
